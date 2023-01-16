@@ -30,3 +30,27 @@ https://www.kaggle.com/learn
     preds_test = model.predict(final_X_test)
     
     ```
+    
+- 📌 How to handle Categorical values
+     - OrdinalEncoder 
+     - One-Hot Encoding 
+     
+     어느정도 랭킹이 가능한 경우에는 Ordinal feature 로 바꿔주는 것도 좋고 그게 아니라면 One-Hot Encoding 인데, 이걸 쓰게 되면 컬럼 수가 너무 많아지는 경우가 생길 수 있다. 너무 많은 컬럼이 생겨도 모델 학습이 잘 안될 수 있다는 점 참고! 
+     
+     ```ruby
+     
+     from sklearn.preprocessing import OrdinalEncoder
+
+    # Make copy to avoid changing original data 
+    label_X_train = X_train.copy()
+    label_X_valid = X_valid.copy()
+
+    # Apply ordinal encoder to each column with categorical data
+    ordinal_encoder = OrdinalEncoder()
+    label_X_train[object_cols] = ordinal_encoder.fit_transform(X_train[object_cols])
+    label_X_valid[object_cols] = ordinal_encoder.transform(X_valid[object_cols])
+
+    print("MAE from Approach 2 (Ordinal Encoding):") 
+    print(score_dataset(label_X_train, label_X_valid, y_train, y_valid))
+
+    ```
